@@ -1,0 +1,11 @@
+#Contents of .../intro-to-docker/docker-compose.yml 
+version: "3"
+services:
+  alpine:
+    image: alpine
+  postgres:
+    image: postgres
+  java:
+    image: java
+  node:
+    image: node

@@ -1,0 +1,38 @@
+version: "3.7"
+services:
+  hello:
+    build:
+      context: ./hello/
+      args:
+        JAR_FILE: ./build/libs/hello-0.0.1-SNAPSHOT.jar
+    environment:
+      - SERVICE_PORT=8000
+      - management_endpoints_web_exposure_include="*"
+    ports:
+      - 8000:8080
+  delete-me-db:
+    image: postgres
+    environment:
+      - POSTGRES_DB=delete-me-test
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=s3cr3t
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U root -d delete-me-test"]
+      interval: 5s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+  delete-me:
+    build: 
+      context: ./delete-me/
+      args: 
+        JAR_FILE: ./build/libs/covr-0.0.1-SNAPSHOT.jar
+    environment:
+      - SERVER_PORT=8001
+      - management_endpoints_web_exposure_include="*"
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://delete-me-db:5432/delete-me-test
+      - spring.datasource.username=root
+      - spring.datasource.password=s3cr3t
+    ports:
+      - 8001:8001
+

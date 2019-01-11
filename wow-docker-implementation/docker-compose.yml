@@ -1,0 +1,24 @@
+version: "3.7"
+services:
+  wow-register-db:
+    image: postgres
+    environment:
+      - POSTGRES_DB=checkin-prod
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=s3cr3t
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U root -d checkin-prod"]
+      interval: 5s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+  wow-register:
+    image: wow/register
+    environment:
+      - SERVER_PORT=8008
+      - management_endpoints_web_exposure_include="*"
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://wow-register-db:5432/checkin-prod
+      - spring.datasource.username=root
+      - spring.datasource.password=s3cr3t
+    ports:
+      - 8008:8008

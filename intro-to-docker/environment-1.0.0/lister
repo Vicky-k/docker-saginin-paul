@@ -1,0 +1,17 @@
+#! /usr/bin/env sh
+
+echo The current working directory is:
+echo
+pwd
+echo ---------------------
+echo here the conten of working directory:
+echo
+ls
+echo
+echo --------------------------
+echo here the environment variable:
+echo
+env
+echo
+echo ----------------
+echo done
